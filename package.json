@@ -1,5 +1,5 @@
 {
-  "name": "baidu-aip-sdk",
+  "name": "baidu-aip-sdk-ts",
   "version": "2.3.3",
   "description": "百度AI开放平台Nodejs SDK, 文档以及详情请访问官网: https://ai.baidu.com",
   "main": "src/index.js",

@@ -14,6 +14,28 @@
  * @author baiduAip
  */
 import BaseClient = require('./client/baseClient');
+declare const PATH_USER_DEFINED = "/rest/2.0/solution/v1/img_censor/user_defined";
+declare const PATH_ANTIPORN_GIF = "/rest/2.0/antiporn/v1/detect_gif";
+declare const PATH_FACEAUDIT = "/rest/2.0/solution/v1/face_audit";
+declare const PATH_COMBOCENSOR = "/api/v1/solution/direct/img_censor";
+declare const PATH_REPORT = "/rpc/2.0/feedback/v1/report";
+declare const PATH_ANTIPORN = "/rest/2.0/antiporn/v1/detect";
+declare const PATH_ANTITERROR = "/rest/2.0/antiterror/v1/detect";
+declare const PATH_ANTISPAM = "/rest/2.0/antispam/v2/spam";
+export interface IParamBase {
+    targetPath: typeof PATH_USER_DEFINED | typeof PATH_ANTIPORN_GIF | typeof PATH_FACEAUDIT | typeof PATH_COMBOCENSOR | typeof PATH_REPORT | typeof PATH_ANTIPORN | typeof PATH_ANTITERROR | typeof PATH_ANTISPAM;
+}
+export interface IParam extends IParamBase {
+    configId?: any;
+    image?: any;
+    content?: any;
+    imgUrls?: any;
+    imgUrl?: any;
+    images?: any;
+    scenes?: any;
+    sceneConf?: any;
+    feedback?: any;
+}
 /**
  * AipContentCensor类，构造调用图像审核对象
  *
@@ -25,8 +47,7 @@ import BaseClient = require('./client/baseClient');
  * @param {string} sk  security key.
  */
 declare class AipImageCensor extends BaseClient {
-    constructor(appId: any, ak: any, sk: any);
-    commonImpl(param: any): Promise<any>;
+    commonImpl(param: IParam): Promise<any>;
     jsonRequestImpl(param: any): Promise<{}>;
     antiPornGif(image: any, options: any): Promise<any>;
     antiPorn(image: any, options: any): Promise<any>;

@@ -40,8 +40,36 @@ const PATH_ANTIPORN = '/rest/2.0/antiporn/v1/detect';
 const PATH_ANTITERROR = '/rest/2.0/antiterror/v1/detect';
 const PATH_ANTISPAM = '/rest/2.0/antispam/v2/spam';
 
-const scope = require('./const/devScope').DEFAULT;
+import scope = require('./const/devScope');
 
+export interface IParamBase
+{
+	targetPath: typeof PATH_USER_DEFINED
+        | typeof PATH_ANTIPORN_GIF
+        | typeof PATH_FACEAUDIT
+        | typeof PATH_COMBOCENSOR
+        | typeof PATH_REPORT
+        | typeof PATH_ANTIPORN
+        | typeof PATH_ANTITERROR
+        | typeof PATH_ANTISPAM
+    ;
+}
+
+export interface IParam extends IParamBase
+{
+	configId?
+
+	image?,
+	content?,
+	imgUrls?,
+	imgUrl?,
+	images?,
+
+	scenes?
+	sceneConf?
+
+	feedback?
+}
 
 /**
  * AipContentCensor类，构造调用图像审核对象
@@ -54,11 +82,7 @@ const scope = require('./const/devScope').DEFAULT;
  * @param {string} sk  security key.
  */
 class AipImageCensor extends BaseClient {
-    constructor(appId, ak, sk) {
-        super(appId, ak, sk);
-    }
-
-    commonImpl(param) {
+    commonImpl(param: IParam) {
         let httpClient = new HttpClient();
         let apiUrl = param.targetPath;
         delete param.targetPath;
@@ -111,7 +135,7 @@ class AipImageCensor extends BaseClient {
     }
 
     faceAudit(images, type, configId) {
-        let param = {configId: configId};
+        let param = {configId: configId} as IParam;
         if (type === 'url') {
             images = images.map(function (elm) {
                 return encodeURIComponent(elm);
@@ -126,7 +150,7 @@ class AipImageCensor extends BaseClient {
     }
 
     imageCensorUserDefined(image, type) {
-        let param = {};
+        let param = {} as IParam;
         if (type === 'url') {
             param.imgUrl = image;
         }
@@ -138,7 +162,7 @@ class AipImageCensor extends BaseClient {
     }
 
     imageCensorComb(image, type, scenes, scenesConf) {
-        let param = {};
+        let param = {} as IParam;
         if (type === 'url') {
             param.imgUrl = image;
         }
@@ -152,7 +176,7 @@ class AipImageCensor extends BaseClient {
     }
 
     report(feedback) {
-        let param = {};
+        let param = {} as IParam;
         param.feedback = feedback;
         param.targetPath = PATH_REPORT;
         return this.jsonRequestImpl(param);
